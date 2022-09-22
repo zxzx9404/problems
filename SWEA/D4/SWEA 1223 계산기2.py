@@ -15,7 +15,7 @@ for tc in range(1, 11):
                 stk.append(i)
             elif i == '*':
                 while True:
-                    if stk and stk[-1] != '+':   # +가 나올때까지 pop
+                    if stk and stk[-1] != '+':   # +가 나올때까지 pop 하기
                         huwi.append(stk.pop())
                     else:
                         stk.append(i)
