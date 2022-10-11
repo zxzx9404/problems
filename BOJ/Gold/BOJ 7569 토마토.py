@@ -1,48 +1,39 @@
-from collections import deque
+# 2차원과 개념적으로 동일한 3차원 델타 탐색
+# Python3 : 4364ms / PyPy3 : 900ms
 import sys
+from collections import deque
 input = sys.stdin.readline
 
-def bfs():
-    while queue:
-        z, x, y = queue.popleft()
-        
-        for i in range(6):
-            a = z + dz[i]
-            b = x + dx[i]
-            c = y + dy[i]
-            if 0 <= a < h and 0 <= b < n and 0 <= c < m and arr[a][b][c] == 0:
-                queue.append([a,b,c])
-                arr[a][b][c] = arr[z][x][y]+1
+M, N, H = map(int, input().split())
 
+arr = [[list(map(int, input().split())) for _ in range(N)] for _ in range(H)]
 
-m,n,h = map(int,input().split())
-arr = []
-queue = deque([])
-for k in range(h):
-    temp = []
-    for i in range(n):
-        temp.append(list(map(int,input().split())))
-    arr.append(temp)
-for k in range(h):
-    for i in range(n):
-        for j in range(m):
-            if arr[k][i][j] == 1:
-                queue.append([k,i,j])
+# 시작점들 찾기
+q = deque()
+for h in range(H):
+    for i in range(N):
+        for j in range(M):
+            if arr[h][i][j] == 1:
+                q.append((h, i, j))
 
+# BFS 탐색
+while q:
+    h, i, j = q.popleft()
+    
+    for dh, di, dj in [[1, 0, 0], [-1, 0, 0], [0, 0, 1], [0, 0, -1], [0, 1, 0], [0, -1, 0]]:
+        nh, ni, nj = h + dh, i + di, j + dj
+        if 0 <= nh < H and 0 <= ni < N and 0 <= nj < M and arr[nh][ni][nj] == 0:
+            arr[nh][ni][nj] = arr[h][i][j] + 1
+            q.append((nh, ni, nj))
 
-dz = [-1, 1, 0, 0, 0, 0]
-dx = [0, 0, -1, 1, 0, 0]
-dy = [0, 0, 0, 0, -1, 1]
-
-bfs()
 ans = 0
-for k in arr:
-    for i in k:
-        for j in i:
-            if j==0:
-                print(-1)
-                exit(0)
-        ans = max(ans,max(i))
-print(ans-1)
-
-# 3차원 list 및 3차원 델타 다루는 방법 익히는 문제
+for h in range(H):
+    for i in range(N):
+        # 0이 하나라도 남아있으면 -1 출력 후 break
+        if 0 in arr[h][i]:
+            print(-1)
+            quit()
+        ans = max(ans, max(arr[h][i]))
+else:
+    # 아니라면 제일 큰 값 -1 (시작점이 1이었으므로) 출력
+    print(ans-1)
