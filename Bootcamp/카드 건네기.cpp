@@ -31,7 +31,7 @@ void Solve(void){
         }
         sol[k++] = que.front(); que.pop();
     }
-    sol[k++] = que.front(); que.pop();
+    sol[k] = que.front(); que.pop();
 }
  
 void InputData(){
