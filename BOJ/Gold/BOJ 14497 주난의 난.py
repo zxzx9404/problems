@@ -1,3 +1,4 @@
+# cyclic하게 탐색하는 BFS. 근데 문제가 좀 애매하게 설명되어있음..
 from collections import deque
 import sys
 input = sys.stdin.readline
