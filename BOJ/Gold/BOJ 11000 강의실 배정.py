@@ -1,25 +1,20 @@
-import heapq
+import sys, heapq
+
+input = sys.stdin.readline
 
 N = int(input())
 arr = []
 for _ in range(N):
     arr.append(list(map(int, input().split())))
 
-arr.sort(key=lambda x : (x[0], x[1]))
+arr.sort()
 hq = []
-ans = 1
 heapq.heappush(hq, arr[0][1])
-if len(arr) == 1:
-    print(1)
-else:
-    for s, e in arr[1:]:
-        while hq:
-            t = heapq.heappop(hq)
-            if t > s:
-                heapq.heappush(hq, t)
-                break
-        
-        heapq.heappush(hq, e)
-        ans = max(ans, len(hq))
-    
-    print(ans)
+
+for i in range(1, N):
+    s, e = arr[i]
+    if hq[0] <= s:
+        heapq.heappop(hq)
+    heapq.heappush(hq, e)
+
+print(len(hq))
